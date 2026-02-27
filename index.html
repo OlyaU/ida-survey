@@ -33,6 +33,9 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
+  body.on-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0f1e40 50%, #1a3a6e 100%);
+  }
 
   /* ── Hero ─────────────────────────────────────────────── */
   .hero {
@@ -45,6 +48,7 @@
   .hero::before {
     content: '';
     position: absolute; inset: 0;
+    pointer-events: none;
     background:
       radial-gradient(ellipse 60% 80% at 90% 50%, rgba(36,81,163,0.35) 0%, transparent 70%),
       radial-gradient(ellipse 40% 60% at 10% 80%, rgba(10,124,110,0.2) 0%, transparent 60%);
@@ -627,6 +631,7 @@
   .result-hero::before {
     content: '';
     position: absolute; inset: 0;
+    pointer-events: none;
     background: radial-gradient(circle at 70% 50%, rgba(36,81,163,0.4), transparent 60%);
   }
   .result-hero > * { position: relative; }
@@ -749,7 +754,7 @@
   }
 </style>
 </head>
-<body>
+<body class="on-hero">
 
 <!-- ── Hero ──────────────────────────────────────────────────────────────── -->
 <header class="hero">
@@ -939,6 +944,7 @@ function selectPanel(p) {
   state.currentSection = 0;
   state.answers = {};
   state.scaleVal = null;
+  document.body.classList.remove('on-hero');
   document.getElementById('progressWrap').style.display = '';
   document.getElementById('mainWrap').style.display = '';
   renderAll();
@@ -1021,10 +1027,7 @@ function renderAll() {
 
   sec.questions.forEach(q => {
     const answered = state.answers[q.id] !== undefined;
-    const tagHtml = q.tags.map(t =>
-      t === 'key' ? '<span class="tag tag-key">Ключевой</span>' :
-      t === 'merged' ? '<span class="tag tag-merged">Объединён</span>' : ''
-    ).join('');
+    const tagHtml = ''; // tags hidden from users
 
     html += `
       <div class="q-card ${answered ? 'answered' : ''}" id="qc_${q.id}">
@@ -1032,7 +1035,7 @@ function renderAll() {
           <div class="q-num">${q.num}</div>
           <div class="q-text">${q.text}</div>
         </div>
-        ${tagHtml ? `<div class="q-tags">${tagHtml}</div>` : ''}
+
         <div class="options">`;
 
     q.opts.forEach((opt, oi) => {
