@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИДА — Опрос рынка складской недвижимости</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:   #1a2f5e;
+    --blue:   #2451a3;
+    --blue2:  #3968c8;
+    --teal:   #0a7c6e;
+    --teal2:  #0d9688;
+    --red:    #c0392b;
+    --gold:   #d4a017;
+    --bg:     #f0f2f7;
+    --card:   #ffffff;
+    --border: #d8dce8;
+    --text:   #1c2340;
+    --muted:  #6b738a;
+    --light:  #e8ecf5;
+    --green:  #1b7a4a;
+    --orange: #c96b1a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ─────────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #0f1e40 50%, #1a3a6e 100%);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 90% 50%, rgba(36,81,163,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(10,124,110,0.2) 0%, transparent 60%);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-left {
+    padding: 56px 48px 56px 32px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    color: rgba(255,255,255,0.85);
+  }
+  .hero-badge span { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .hero h1 {
+    font-family: 'Spectral', serif;
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 em { font-style: italic; color: #a8c8ff; }
+  .hero-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.7);
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+  }
+  .stat { }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .hero-right {
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+    background: rgba(0,0,0,0.15);
+  }
+  .panel-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+  }
+  .panel-card.dev::before { background: #60a5fa; }
+  .panel-card.ten::before { background: #34d399; }
+  .panel-card:hover {
+    background: rgba(255,255,255,0.14);
+    transform: translateX(3px);
+  }
+  .panel-card.active {
+    background: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.3);
+  }
+  .pc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .pc-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+  }
+  .pc-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.1);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+  .pc-desc {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+  }
+  .pc-arrow {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform 0.2s;
+  }
+  .panel-card:hover .pc-arrow { transform: translateX(3px); }
+
+  /* ── Progress bar ────────────────────────────────────── */
+  .progress-wrap {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .progress-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .progress-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--light);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--blue2));
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-pct {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--blue);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* ── Main layout ─────────────────────────────────────── */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* ── Sidebar nav ─────────────────────────────────────── */
+  .sidebar {
+    position: sticky;
+    top: 72px;
+  }
+  .sidebar-section {
+    margin-bottom: 6px;
+  }
+  .sidebar-panel {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 8px 12px 4px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .nav-item:hover { background: white; color: var(--text); }
+  .nav-item.active { background: white; color: var(--navy); font-weight: 700; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .nav-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 800;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+  .nav-item.active .nav-dot {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+  }
+  .nav-item.done .nav-dot {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .nav-check { font-size: 9px; }
+
+  /* ── Sections ─────────────────────────────────────────── */
+  .section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .section.visible { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--light);
+  }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .icon-blue { background: #dbeafe; }
+  .icon-navy { background: #dde4f5; }
+  .icon-teal { background: #ccf2ee; }
+  .icon-green { background: #dcfce7; }
+  .icon-gold  { background: #fef3c7; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── Question cards ──────────────────────────────────── */
+  .questions { display: flex; flex-direction: column; gap: 14px; }
+
+  .q-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+  }
+  .q-card:hover { border-color: #b0bde0; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+  .q-card.answered { border-color: #a3c4f3; background: #fafdff; }
+
+  .q-top {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .q-num {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: var(--light);
+    color: var(--blue);
+    font-size: 11px;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .q-card.answered .q-num {
+    background: var(--blue);
+    color: white;
+  }
+  .q-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .q-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; margin-left: 40px; }
+  .tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 100px;
+  }
+  .tag-key  { background: #dcfce7; color: #166534; }
+  .tag-merged { background: #ffedd5; color: #9a3412; }
+
+  /* ── Radio options ───────────────────────────────────── */
+  .options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-left: 40px;
+  }
+  .opt {
+    flex: 1;
+    min-width: 100px;
+    position: relative;
+  }
+  .opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .opt label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    background: var(--bg);
+    transition: all 0.15s;
+    text-align: center;
+    line-height: 1.3;
+    user-select: none;
+  }
+  .opt label:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    background: #eff4ff;
+  }
+  .opt input:checked + label {
+    border-color: var(--blue);
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 2px 8px rgba(36,81,163,0.25);
+  }
+
+  /* Teal variant for Block II */
+  .teal-block .opt input:checked + label {
+    border-color: var(--teal);
+    background: var(--teal);
+    box-shadow: 0 2px 8px rgba(10,124,110,0.25);
+  }
+  .teal-block .q-card.answered { border-color: #7fdacf; background: #f0faf9; }
+  .teal-block .q-card.answered .q-num { background: var(--teal); }
+  .teal-block .nav-item.active .nav-dot { background: var(--teal); border-color: var(--teal); }
+
+  /* ── Scale question (1-10) ───────────────────────────── */
+  .scale-card {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef9f0 100%);
+    border: 2px solid #f59e0b;
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-top: 8px;
+  }
+  .scale-top {
+    display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;
+  }
+  .scale-icon {
+    width: 36px; height: 36px;
+    background: #fef3c7;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .scale-title {
+    font-size: 14px; font-weight: 700; color: #92400e; line-height: 1.4;
+  }
+  .scale-sub {
+    font-size: 12px; color: #b45309; margin-top: 4px; line-height: 1.4;
+  }
+  .scale-track {
+    display: flex; gap: 6px; align-items: stretch; margin-bottom: 10px;
+  }
+  .scale-btn {
+    flex: 1;
+    height: 48px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 800;
+    color: white;
+    transition: all 0.15s;
+    position: relative;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  }
+  .scale-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .scale-btn.selected { transform: translateY(-4px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); ring: 3px; }
+  .scale-btn.selected::after {
+    content: '▲';
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: #92400e;
+  }
+  .scale-labels {
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: #92400e; font-weight: 600;
+    padding: 0 2px; margin-top: 8px;
+  }
+
+  /* ── Open question ───────────────────────────────────── */
+  .open-card {
+    background: var(--card);
+    border: 1.5px dashed var(--border);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-top: 8px;
+  }
+  .open-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 600; color: var(--text);
+    margin-bottom: 12px;
+  }
+  .open-icon {
+    width: 28px; height: 28px;
+    background: #f1f5ff;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  textarea {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--bg);
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s;
+    line-height: 1.5;
+  }
+  textarea:focus { outline: none; border-color: var(--blue); background: white; }
+  .char-count { font-size: 11px; color: var(--muted); text-align: right; margin-top: 6px; }
+
+  /* ── Navigation buttons ──────────────────────────────── */
+  .nav-btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--light);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: none;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+  }
+  .btn-ghost:hover { background: var(--light); color: var(--text); }
+  .btn-primary {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 2px 8px rgba(36,81,163,0.3);
+  }
+  .btn-primary:hover { background: var(--blue2); box-shadow: 0 4px 14px rgba(36,81,163,0.35); transform: translateY(-1px); }
+  .btn-teal {
+    background: var(--teal);
+    color: white;
+    box-shadow: 0 2px 8px rgba(10,124,110,0.3);
+  }
+  .btn-teal:hover { background: var(--teal2); transform: translateY(-1px); }
+  .btn-success {
+    background: var(--green);
+    color: white;
+    padding: 13px 28px;
+    font-size: 14px;
+    box-shadow: 0 3px 12px rgba(27,122,74,0.3);
+  }
+  .btn-success:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(27,122,74,0.35); }
+
+  .section-counter {
+    font-size: 12px; font-weight: 600; color: var(--muted);
+  }
+
+  /* ── Block switcher ──────────────────────────────────── */
+  .block-tabs {
+    display: flex; gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 28px;
+  }
+  .block-tab {
+    flex: 1; padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px; font-weight: 700;
+    text-align: center;
+    transition: all 0.2s;
+    color: var(--muted);
+    border: none;
+    background: transparent;
+    font-family: 'Manrope', sans-serif;
+  }
+  .block-tab:hover { background: var(--light); color: var(--text); }
+  .block-tab.active-dev { background: var(--blue); color: white; }
+  .block-tab.active-ten { background: var(--teal); color: white; }
+
+  /* ── Results screen ──────────────────────────────────── */
+  .results { display: none; }
+  .results.visible { display: block; }
+  .result-hero {
+    background: linear-gradient(135deg, var(--navy), #0f2050);
+    color: white;
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 70% 50%, rgba(36,81,163,0.4), transparent 60%);
+  }
+  .result-hero > * { position: relative; }
+  .result-title { font-family: 'Spectral', serif; font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  .result-sub { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 32px; }
+  .ida-display {
+    display: inline-flex; flex-direction: column; align-items: center;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 24px 48px;
+    margin-bottom: 16px;
+  }
+  .ida-value {
+    font-size: 64px; font-weight: 800; line-height: 1;
+    background: linear-gradient(135deg, #60a5fa, #a8d4ff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .ida-label { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; }
+  .result-zone {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 100px;
+    font-size: 13px; font-weight: 700;
+  }
+  .zone-neutral { background: #fef3c7; color: #92400e; }
+  .zone-positive { background: #dcfce7; color: #166534; }
+  .zone-negative { background: #fee2e2; color: #991b1b; }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .res-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .res-card-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.07em; color: var(--muted); margin-bottom: 14px;
+  }
+  .res-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  }
+  .res-row-label { font-size: 12px; color: var(--muted); flex: 1; }
+  .res-bar-wrap { flex: 2; height: 8px; background: var(--light); border-radius: 100px; overflow: hidden; }
+  .res-bar-fill { height: 100%; border-radius: 100px; }
+  .res-val { font-size: 12px; font-weight: 800; min-width: 36px; text-align: right; }
+  .scale-result {
+    text-align: center;
+  }
+  .scale-num {
+    font-size: 52px; font-weight: 800; color: var(--navy); line-height: 1;
+  }
+  .scale-out-of { font-size: 14px; color: var(--muted); }
+  .scale-visual {
+    margin: 12px 0;
+    height: 12px;
+    background: linear-gradient(90deg, #ef4444, #f59e0b, #22c55e);
+    border-radius: 100px;
+    position: relative;
+  }
+  .scale-marker {
+    width: 20px; height: 20px;
+    background: var(--navy);
+    border: 3px solid white;
+    border-radius: 50%;
+    position: absolute;
+    top: -4px;
+    transform: translateX(-50%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: left 0.8s ease;
+  }
+  .scale-endlabels { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); font-weight: 600; }
+
+  /* ── Segment selector ────────────────────────────────── */
+  .segment-grid {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;
+  }
+  .seg-btn {
+    padding: 8px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 100px;
+    background: var(--bg);
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .seg-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .seg-btn.active { background: var(--teal); border-color: var(--teal); color: white; }
+  .seg-label { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+
+  /* ── Toast ───────────────────────────────────────────── */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--navy); color: white;
+    padding: 12px 20px; border-radius: 12px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 999;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toast.show { transform: none; opacity: 1; }
+
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .main { grid-template-columns: 1fr; padding: 20px 16px 60px; }
+    .sidebar { display: none; }
+    .results-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Hero ──────────────────────────────────────────────────────────────── -->
+<header class="hero">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="hero-badge"><span></span> Квартальный мониторинг · III кв. 2025</div>
+      <h1>Индекс деловой<br>активности <em>ИДА</em><br>складской недвижимости</h1>
+      <p class="hero-desc">Оцените состояние рынка за прошедший квартал. Ваши ответы формируют сводный индекс настроений участников рынка Казахстана.</p>
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">14</div><div class="stat-label">вопросов</div></div>
+        <div class="stat"><div class="stat-num">~8</div><div class="stat-label">минут</div></div>
+        <div class="stat"><div class="stat-num">2</div><div class="stat-label">панели</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.4);margin-bottom:8px;">Выберите свою роль</div>
+      <div class="panel-card dev" onclick="selectPanel('dev')">
+        <div class="pc-top">
+          <div class="pc-title">🏗 Девелопер / Собственник</div>
+          <div class="pc-count">14 вопр.</div>
+        </div>
+        <div class="pc-desc">Для собственников, девелоперов и управляющих компаний <span class="pc-arrow">→</span></div>
+      </div>
+      <div class="panel-card ten" onclick="selectPanel('ten')">
+        <div class="pc-top">
+          <div class="pc-title">📦 Арендатор</div>
+          <div class="pc-count">14 вопр.</div>
+        </div>
+        <div class="pc-desc">Для компаний-арендаторов складских площадей <span class="pc-arrow">→</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Progress ──────────────────────────────────────────────────────────── -->
+<div class="progress-wrap" id="progressWrap" style="display:none">
+  <div class="progress-inner">
+    <div class="progress-label" id="progressLabel">Раздел 1 из 5</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-pct" id="progressPct">0%</div>
+  </div>
+</div>
+
+<!-- ── Main ───────────────────────────────────────────────────────────────── -->
+<div class="main" id="mainWrap" style="display:none">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <!-- Content -->
+  <div id="content">
+    <div class="block-tabs" id="blockTabs" style="display:none">
+      <button class="block-tab" id="tabDev" onclick="switchPanel('dev')">🏗 Блок I — Девелоперы</button>
+      <button class="block-tab" id="tabTen" onclick="switchPanel('ten')">📦 Блок II — Арендаторы</button>
+    </div>
+    <div id="formArea"></div>
+    <div class="results" id="resultsArea"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG — вставьте сюда URL вашего Google Apps Script ──────────────────
+const SCRIPT_URL = https://script.google.com/macros/s/AKfycbyGZiQ9NZKzWa1j2cMV2PzCk5j-P4vHtYvmU7nHYmI92MRMLgNig_bQlDIGqT0cLq3G7w/exec;
+// ──────────────────────────────────────────────────────────────────────────
+
+// ── Data ───────────────────────────────────────────────────────────────────
+const BLOCKS = {
+  dev: {
+    color: 'blue',
+    sections: [
+      {
+        id: 'd1', title: 'Деловая активность', icon: '📊', iconCls: 'icon-blue',
+        sub: 'Общий спрос и запросы на рынке',
+        questions: [
+          { id:'d1_1', num:'1.1', text:'Как изменился спрос на аренду ваших объектов по сравнению с прошлым кварталом?', opts:['Вырос','Не изменился','Снизился'], tags:['key'] },
+          { id:'d1_2', num:'1.2', text:'Как изменилось количество и качество запросов от потенциальных арендаторов (включая темп принятия ими решений)?', opts:['Улучшилось','Не изменилось','Ухудшилось'], tags:['merged'] },
+          { id:'d1_3', num:'1.3', text:'Как вы оцениваете текущий уровень спроса на складские площади в вашем регионе?', opts:['Высокий','Умеренный','Низкий'], tags:[] },
+        ]
+      },
+      {
+        id: 'd2', title: 'Коммерческие показатели', icon: '💰', iconCls: 'icon-navy',
+        sub: 'Ставки, вакантность, договоры',
+        questions: [
+          { id:'d2_1', num:'2.1', text:'Как изменились запрашиваемые ставки аренды на ваши объекты?', opts:['Выросли','Остались прежними','Снизились'], tags:['key'] },
+          { id:'d2_2', num:'2.2', text:'Практикуете ли вы дисконты к запрашиваемым ставкам?', opts:['Нет','Ситуативно','Регулярно'], tags:['key'] },
+          { id:'d2_3', num:'2.3', text:'Как изменился уровень вакантности ваших объектов?', opts:['Снизился','Не изменился','Вырос'], tags:['key'] },
+          { id:'d2_4', num:'2.4', text:'Как изменился средний срок поиска арендатора (срок экспозиции)?', opts:['Сократился','Не изменился','Увеличился'], tags:[] },
+          { id:'d2_5', num:'2.5', text:'Как изменился объём новых договоров аренды?', opts:['Вырос','Не изменился','Снизился'], tags:['key'] },
+        ]
+      },
+      {
+        id: 'd3', title: 'Инвестиции и девелопмент', icon: '🏢', iconCls: 'icon-blue',
+        sub: 'Планы строительства и финансирование',
+        questions: [
+          { id:'d3_1', num:'3.1', text:'Планируете ли вы начать новые строительные проекты в течение следующих 6 месяцев?', opts:['Да','Рассматриваем','Нет'], tags:[] },
+          { id:'d3_2', num:'3.2', text:'Как изменилась себестоимость девелопмента (стоимость земли + затраты на строительство)?', opts:['Снизилась','Не изменилась','Выросла'], tags:['merged'] },
+          { id:'d3_3', num:'3.3', text:'Как изменилась доступность финансирования (кредиты, проектное финансирование)?', opts:['Улучшилась','Не изменилась','Ухудшилась'], tags:['key'] },
+        ]
+      },
+      {
+        id: 'd4', title: 'Операционные показатели', icon: '⚙️', iconCls: 'icon-navy',
+        sub: 'Расходы и надёжность арендаторов',
+        questions: [
+          { id:'d4_1', num:'4.1', text:'Как изменились операционные расходы (коммунальные услуги, охрана, обслуживание)?', opts:['Снизились','Не изменились','Выросли'], tags:[] },
+          { id:'d4_2', num:'4.2', text:'Как изменилась надёжность арендаторов (платёжная дисциплина и количество досрочных расторжений)?', opts:['Улучшилась','Не изменилась','Ухудшилась'], tags:['merged'] },
+        ]
+      },
+      {
+        id: 'd5', title: 'Ожидания (3–6 мес.)', icon: '🔭', iconCls: 'icon-gold',
+        sub: 'Прогноз на следующие полгода',
+        questions: [
+          { id:'d5_1', num:'5.1', text:'Каковы ваши ожидания по спросу на складские площади?', opts:['Вырастет','Останется прежним','Снизится'], tags:['key'] },
+          { id:'d5_2', num:'5.2', text:'Каковы ваши ожидания по ставкам аренды?', opts:['Вырастут','Останутся прежними','Снизятся'], tags:['key'] },
+          { id:'d5_3', num:'5.3', text:'Каковы ваши ожидания по уровню вакантности?', opts:['Снизится','Без изменений','Вырастет'], tags:[] },
+          { id:'d5_4', num:'5.4', text:'Общий деловой оптимизм на следующие 6 месяцев', opts:['Позитивный','Нейтральный','Негативный'], tags:['key'] },
+        ]
+      },
+    ]
+  },
+  ten: {
+    color: 'teal',
+    sections: [
+      {
+        id: 't1', title: 'Операционная активность', icon: '📦', iconCls: 'icon-teal',
+        sub: 'Товарооборот и загруженность',
+        questions: [
+          { id:'t1_1', num:'1.1', text:'Как изменился объём товарооборота вашей компании за последний квартал (отражает также загруженность склада)?', opts:['Вырос','Не изменился','Снизился'], tags:['merged','key'] },
+          { id:'t1_2', num:'1.2', text:'Соответствует ли текущий объём складских площадей вашим операционным потребностям?', opts:['Избыток','В норме','Дефицит'], tags:['key'] },
+        ]
+      },
+      {
+        id: 't2', title: 'Условия аренды', icon: '📋', iconCls: 'icon-teal',
+        sub: 'Ставки, доступность, гибкость',
+        questions: [
+          { id:'t2_1', num:'2.1', text:'Как изменились арендные ставки на занимаемые вами складские площади?', opts:['Снизились','Не изменились','Выросли'], tags:['key'] },
+          { id:'t2_2', num:'2.2', text:'Как вы оцениваете доступность подходящих складских площадей на рынке (включая лёгкость поиска альтернативы)?', opts:['Высокая','Умеренная','Низкая'], tags:['merged'] },
+          { id:'t2_3', num:'2.3', text:'Как изменилась гибкость арендодателей в согласовании условий договоров?', opts:['Выросла','Не изменилась','Снизилась'], tags:['key'] },
+        ]
+      },
+      {
+        id: 't3', title: 'Логистика', icon: '🚛', iconCls: 'icon-green',
+        sub: 'Издержки и инфраструктура',
+        questions: [
+          { id:'t3_1', num:'3.1', text:'Как изменились ваши общие логистические издержки (транспорт, фулфилмент)?', opts:['Снизились','Не изменились','Выросли'], tags:[] },
+          { id:'t3_2', num:'3.2', text:'Как изменились сроки доставки товаров до вашего склада (отражает качество транспортной инфраструктуры)?', opts:['Сократились','Не изменились','Увеличились'], tags:['merged'] },
+        ]
+      },
+      {
+        id: 't4', title: 'Финансы и деловая среда', icon: '💼', iconCls: 'icon-green',
+        sub: 'Выручка, нагрузка, финансирование',
+        questions: [
+          { id:'t4_1', num:'4.1', text:'Как изменился объём продаж / выручки вашей компании (ключевой индикатор потребности в площадях)?', opts:['Вырос','Не изменился','Снизился'], tags:['merged','key'] },
+          { id:'t4_2', num:'4.2', text:'Как изменилась финансовая нагрузка аренды на бюджет компании?', opts:['Снизилась','Не изменилась','Выросла'], tags:['key'] },
+          { id:'t4_3', num:'4.3', text:'Как изменилась доступность банковского финансирования для вашего бизнеса?', opts:['Улучшилась','Не изменилась','Ухудшилась'], tags:[] },
+        ]
+      },
+      {
+        id: 't5', title: 'Ожидания (3–6 мес.)', icon: '🔭', iconCls: 'icon-gold',
+        sub: 'Прогноз на следующие полгода',
+        questions: [
+          { id:'t5_1', num:'5.1', text:'Планируете ли вы изменение объёма арендуемых складских площадей?', opts:['Расширение','Без изменений','Сокращение'], tags:['key'] },
+          { id:'t5_2', num:'5.2', text:'Каковы ожидания по объёму товарооборота вашей компании в следующие 3–6 месяцев?', opts:['Рост','Стабильность','Снижение'], tags:['key'] },
+          { id:'t5_3', num:'5.3', text:'Каковы ожидания по ставкам аренды для вашего сегмента?', opts:['Снизятся','Без изменений','Вырастут'], tags:['key'] },
+          { id:'t5_4', num:'5.4', text:'Общий деловой оптимизм вашей компании на следующие 6 месяцев', opts:['Позитивный','Нейтральный','Негативный'], tags:['key'] },
+        ]
+      },
+    ]
+  }
+};
+
+// ── State ──────────────────────────────────────────────────────────────────
+let state = {
+  panel: null,
+  currentSection: 0,
+  answers: {},
+  scaleVal: null,
+  openText: '',
+  segment: null,
+};
+
+// ── Panel select ───────────────────────────────────────────────────────────
+function selectPanel(p) {
+  state.panel = p;
+  state.currentSection = 0;
+  state.answers = {};
+  state.scaleVal = null;
+  document.getElementById('progressWrap').style.display = '';
+  document.getElementById('mainWrap').style.display = '';
+  renderAll();
+  window.scrollTo({ top: document.getElementById('progressWrap').offsetTop - 10, behavior: 'smooth' });
+}
+
+function switchPanel(p) {
+  state.panel = p;
+  state.currentSection = 0;
+  renderAll();
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function renderAll() {
+  const block = BLOCKS[state.panel];
+  const isTeal = state.panel === 'ten';
+  const totalSections = block.sections.length;
+
+  // Progress
+  const pct = Math.round((state.currentSection / totalSections) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressLabel').textContent =
+    state.currentSection < totalSections
+      ? `Раздел ${state.currentSection + 1} из ${totalSections}`
+      : 'Итоговый раздел';
+
+  // Sidebar
+  const sb = document.getElementById('sidebar');
+  let sbHtml = `<div class="sidebar-panel">${isTeal ? '📦 Арендатор' : '🏗 Девелопер'}</div>`;
+  block.sections.forEach((sec, i) => {
+    const done = i < state.currentSection;
+    const active = i === state.currentSection;
+    sbHtml += `<a class="nav-item ${active ? 'active' : ''} ${done ? 'done' : ''}" onclick="goToSection(${i})">
+      <span class="nav-dot">${done ? '✓' : i+1}</span>
+      <span>${sec.title}</span>
+    </a>`;
+  });
+  sb.innerHTML = sbHtml;
+
+  // Form area
+  const formArea = document.getElementById('formArea');
+  const resultsArea = document.getElementById('resultsArea');
+
+  if (state.currentSection >= totalSections) {
+    formArea.style.display = 'none';
+    resultsArea.classList.add('visible');
+    renderResults();
+    return;
+  }
+
+  formArea.style.display = '';
+  resultsArea.classList.remove('visible');
+
+  const sec = block.sections[state.currentSection];
+  const isLast = state.currentSection === totalSections - 1;
+
+  let html = `
+    <div class="section visible ${isTeal ? 'teal-block' : ''}">
+      <div class="section-header">
+        <div class="section-icon ${sec.iconCls}">${sec.icon}</div>
+        <div>
+          <div class="section-title">${sec.title}</div>
+          <div class="section-sub">${sec.sub} · Раздел ${state.currentSection + 1} из ${totalSections}</div>
+        </div>
+      </div>`;
+
+  // Segment selector for Block II section 1
+  if (isTeal && state.currentSection === 0) {
+    const segs = ['E-commerce / маркетплейс', 'Логистика / 3PL', 'Ритейл', 'Производство', 'FMCG / дистрибуция'];
+    html += `<div class="seg-label">Отраслевой профиль вашей компании:</div>
+    <div class="segment-grid">`;
+    segs.forEach(s => {
+      html += `<button class="seg-btn ${state.segment === s ? 'active' : ''}" onclick="setSegment('${s}')">${s}</button>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `<div class="questions">`;
+
+  sec.questions.forEach(q => {
+    const answered = state.answers[q.id] !== undefined;
+    const tagHtml = q.tags.map(t =>
+      t === 'key' ? '<span class="tag tag-key">Ключевой</span>' :
+      t === 'merged' ? '<span class="tag tag-merged">Объединён</span>' : ''
+    ).join('');
+
+    html += `
+      <div class="q-card ${answered ? 'answered' : ''}" id="qc_${q.id}">
+        <div class="q-top">
+          <div class="q-num">${q.num}</div>
+          <div class="q-text">${q.text}</div>
+        </div>
+        ${tagHtml ? `<div class="q-tags">${tagHtml}</div>` : ''}
+        <div class="options">`;
+
+    q.opts.forEach((opt, oi) => {
+      html += `
+          <div class="opt">
+            <input type="radio" name="${q.id}" id="${q.id}_${oi}" value="${oi}"
+              ${state.answers[q.id] === oi ? 'checked' : ''}
+              onchange="answer('${q.id}', ${oi})">
+            <label for="${q.id}_${oi}">${opt}</label>
+          </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  html += `</div>`;
+
+  // Scale + open on last section
+  if (isLast) {
+    const scaleColors = ['#ef4444','#f97316','#f59e0b','#eab308','#84cc16','#22c55e','#16a34a','#15803d','#166534','#134e2a'];
+    html += `
+    <div class="scale-card" style="margin-top:20px">
+      <div class="scale-top">
+        <div class="scale-icon">⚖️</div>
+        <div>
+          <div class="scale-title">Итоговая оценка: баланс рынка</div>
+          <div class="scale-sub">1 = полный рынок арендатора &nbsp;·&nbsp; 5 = равновесие &nbsp;·&nbsp; 10 = полный рынок арендодателя</div>
+        </div>
+      </div>
+      <div class="scale-track">`;
+    for (let i = 1; i <= 10; i++) {
+      html += `<button class="scale-btn ${state.scaleVal === i ? 'selected' : ''}"
+        style="background:${scaleColors[i-1]}"
+        onclick="setScale(${i})">${i}</button>`;
+    }
+    html += `</div>
+      <div class="scale-labels"><span>Рынок арендатора</span><span>Равновесие</span><span>Рынок арендодателя</span></div>
+    </div>
+
+    <div class="open-card" style="margin-top:14px">
+      <div class="open-label">
+        <div class="open-icon">✏️</div>
+        Открытый вопрос (необязательно)
+      </div>
+      <textarea id="openText" placeholder="Какой один фактор оказал наибольшее влияние на ваш бизнес в этом квартале?" maxlength="200" oninput="updateChar(this)">${state.openText}</textarea>
+      <div class="char-count"><span id="charLeft">${200 - state.openText.length}</span> символов осталось</div>
+    </div>`;
+  }
+
+  // Nav buttons
+  const answeredCount = sec.questions.filter(q => state.answers[q.id] !== undefined).length;
+  const btnColor = isTeal ? 'btn-teal' : 'btn-primary';
+  html += `
+    <div class="nav-btns">
+      <button class="btn btn-ghost" onclick="prevSection()" ${state.currentSection === 0 ? 'disabled style="opacity:0.4"' : ''}>
+        ← Назад
+      </button>
+      <span class="section-counter">${answeredCount} / ${sec.questions.length} ответов</span>
+      <button class="btn ${btnColor}" onclick="nextSection()">
+        ${isLast ? '✓ Завершить опрос' : 'Далее →'}
+      </button>
+    </div>
+  </div>`;
+
+  formArea.innerHTML = html;
+}
+
+function answer(qId, val) {
+  state.answers[qId] = val;
+  const card = document.getElementById('qc_' + qId);
+  if (card) card.classList.add('answered');
+  updateCounter();
+}
+
+function setScale(v) {
+  state.scaleVal = v;
+  renderAll();
+}
+
+function setSegment(s) {
+  state.segment = s;
+  renderAll();
+}
+
+function updateChar(el) {
+  state.openText = el.value;
+  document.getElementById('charLeft').textContent = 200 - el.value.length;
+}
+
+function updateCounter() {
+  const block = BLOCKS[state.panel];
+  const sec = block.sections[state.currentSection];
+  const answered = sec.questions.filter(q => state.answers[q.id] !== undefined).length;
+  const el = document.querySelector('.section-counter');
+  if (el) el.textContent = `${answered} / ${sec.questions.length} ответов`;
+}
+
+function nextSection() {
+  const block = BLOCKS[state.panel];
+  const sec = block.sections[state.currentSection];
+  const unanswered = sec.questions.filter(q => state.answers[q.id] === undefined);
+  if (unanswered.length > 0) {
+    showToast(`⚠️ Ответьте на ${unanswered.length} оставшихся вопрос${unanswered.length === 1 ? '' : 'а'}`);
+    // highlight unanswered
+    unanswered.forEach(q => {
+      const card = document.getElementById('qc_' + q.id);
+      if (card) { card.style.borderColor = '#f87171'; setTimeout(() => card.style.borderColor = '', 2000); }
+    });
+    return;
+  }
+  state.currentSection++;
+  renderAll();
+  window.scrollTo({ top: document.getElementById('progressWrap').offsetTop - 10, behavior: 'smooth' });
+}
+
+function prevSection() {
+  if (state.currentSection > 0) { state.currentSection--; renderAll(); }
+}
+
+function goToSection(i) {
+  if (i <= state.currentSection) { state.currentSection = i; renderAll(); }
+}
+
+// ── Results ───────────────────────────────────────────────────────────────
+function renderResults() {
+  const block = BLOCKS[state.panel];
+  const isTeal = state.panel === 'ten';
+
+  // Calculate IDA
+  const sectionScores = block.sections.map(sec => {
+    const vals = sec.questions.map(q => {
+      const ans = state.answers[q.id];
+      if (ans === undefined) return 0;
+      if (ans === 0) return 1;   // positive
+      if (ans === 2) return -1;  // negative
+      return 0;                  // neutral
+    });
+    return vals.reduce((a,b) => a+b, 0) / vals.length * 100;
+  });
+
+  const weights = [0.20, 0.25, 0.15, 0.10, 0.30];
+  const ida = sectionScores.reduce((sum, s, i) => sum + s * weights[i], 0);
+  const idaRounded = Math.round(ida * 10) / 10;
+
+  let zone, zoneClass;
+  if (idaRounded > 10) { zone = 'Рынок арендодателя'; zoneClass = 'zone-positive'; }
+  else if (idaRounded < -10) { zone = 'Рынок арендатора'; zoneClass = 'zone-negative'; }
+  else { zone = 'Равновесие рынка'; zoneClass = 'zone-neutral'; }
+
+  const scaleDisplay = state.scaleVal || '—';
+  const scalePos = state.scaleVal ? ((state.scaleVal - 1) / 9 * 100) : 50;
+
+  const accentColor = isTeal ? '#0a7c6e' : '#2451a3';
+  const barColors = ['#3b82f6','#10b981','#8b5cf6','#f59e0b','#ef4444'];
+
+  let html = `
+    <div class="result-hero">
+      <div class="result-title">Ваши результаты</div>
+      <div class="result-sub">${isTeal ? 'Блок II — Арендаторы' : 'Блок I — Девелоперы'} · III квартал 2025</div>
+      <div class="ida-display">
+        <div class="ida-value">${idaRounded > 0 ? '+' : ''}${idaRounded}</div>
+        <div class="ida-label">Сводный ИДА</div>
+      </div>
+      <br>
+      <span class="result-zone ${zoneClass}">${zone}</span>
+    </div>
+
+    <div class="results-grid">
+      <div class="res-card">
+        <div class="res-card-title">ИДА по разделам</div>`;
+
+  block.sections.forEach((sec, i) => {
+    const s = Math.round(sectionScores[i] * 10) / 10;
+    const barW = Math.abs(s);
+    const barColor = s > 0 ? '#22c55e' : s < 0 ? '#ef4444' : '#94a3b8';
+    html += `
+        <div class="res-row">
+          <div class="res-row-label">${sec.icon} ${sec.title}</div>
+          <div class="res-bar-wrap"><div class="res-bar-fill" style="width:${barW}%;background:${barColor}"></div></div>
+          <div class="res-val" style="color:${barColor}">${s > 0 ? '+' : ''}${s}</div>
+        </div>`;
+  });
+
+  html += `</div>
+
+      <div class="res-card">
+        <div class="res-card-title">Баланс рынка (ваша оценка)</div>
+        <div class="scale-result">
+          <div class="scale-num">${scaleDisplay}</div>
+          <div class="scale-out-of">из 10</div>
+          <div class="scale-visual">
+            <div class="scale-marker" style="left:${scalePos}%"></div>
+          </div>
+          <div class="scale-endlabels"><span>1 — Арендатор</span><span>10 — Арендодатель</span></div>
+        </div>
+        ${state.openText ? `
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--light)">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:8px">Ваш комментарий</div>
+          <div style="font-size:13px;color:var(--text);font-style:italic;line-height:1.5">"${state.openText}"</div>
+        </div>` : ''}
+      </div>
+    </div>`;
+
+  // Interpretation
+  html += `
+    <div class="res-card" style="margin-bottom:24px">
+      <div class="res-card-title">Как интерпретировать результаты</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:4px">`;
+
+  const zones = [
+    { range: 'от +30 до +100', label: 'Рынок арендодателя', bg: '#dcfce7', tc: '#166534' },
+    { range: 'от +10 до +30', label: 'Умеренный рост', bg: '#d1fae5', tc: '#065f46' },
+    { range: 'от −10 до +10', label: 'Равновесие', bg: '#fef3c7', tc: '#92400e' },
+    { range: 'от −30 до −10', label: 'Умеренное снижение', bg: '#ffedd5', tc: '#9a3412' },
+    { range: 'от −100 до −30', label: 'Рынок арендатора', bg: '#fee2e2', tc: '#991b1b' },
+  ];
+  zones.forEach(z => {
+    const active = (z.range.includes('+30 до +100') && idaRounded > 30) ||
+                   (z.range.includes('+10 до +30') && idaRounded > 10 && idaRounded <= 30) ||
+                   (z.range.includes('−10 до +10') && idaRounded >= -10 && idaRounded <= 10) ||
+                   (z.range.includes('−30 до −10') && idaRounded < -10 && idaRounded >= -30) ||
+                   (z.range.includes('−100 до −30') && idaRounded < -30);
+    html += `<div style="background:${z.bg};border-radius:10px;padding:10px 8px;text-align:center;${active ? 'outline:2px solid ' + z.tc + ';' : 'opacity:0.5'}">
+      <div style="font-size:9px;color:${z.tc};font-weight:700;margin-bottom:4px">${z.range}</div>
+      <div style="font-size:11px;color:${z.tc};font-weight:800;line-height:1.3">${z.label}</div>
+    </div>`;
+  });
+
+  html += `</div></div>`;
+
+  // Action buttons
+  const isConfigured = SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+  html += `
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-success" id="submitBtn" onclick="submitToSheets()">
+        <span id="submitBtnText">✓ Отправить в Google Sheets</span>
+      </button>
+      <button class="btn btn-ghost" onclick="restartSurvey()">↺ Пройти заново</button>
+      <button class="btn btn-ghost" onclick="switchToOtherPanel()">
+        ${isTeal ? '🏗 Блок I (Девелопер)' : '📦 Блок II (Арендатор)'}
+      </button>
+      ${!isConfigured ? '<button class="btn" style="background:#f59e0b;color:white;font-family:Manrope,sans-serif;font-weight:700;font-size:13px;padding:11px 22px;border-radius:10px;border:none;cursor:pointer" onclick="showSetupModal()">⚙️ Как подключить Sheets</button>' : ''}
+    </div>
+    ${!isConfigured ? '<div style="margin-top:12px;padding:12px 16px;background:#fffbeb;border:1px solid #f59e0b;border-radius:10px;font-size:12px;color:#92400e"><b>⚠️ Google Sheets ещё не подключён.</b> Нажмите «Как подключить Sheets» — пошаговая инструкция займёт 5 минут.</div>' : ''}
+  `;
+
+  document.getElementById('resultsArea').innerHTML = html;
+}
+
+function restartSurvey() {
+  state.answers = {};
+  state.scaleVal = null;
+  state.openText = '';
+  state.currentSection = 0;
+  renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function switchToOtherPanel() {
+  const other = state.panel === 'dev' ? 'ten' : 'dev';
+  state.panel = other;
+  state.answers = {};
+  state.scaleVal = null;
+  state.openText = '';
+  state.currentSection = 0;
+  renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Submit to Google Sheets ───────────────────────────────────────────────
+function submitToSheets() {
+  const isConfigured = SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+  if (!isConfigured) {
+    showSetupModal();
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('submitBtnText');
+  if (!btn) return;
+
+  btn.disabled = true;
+  btnText.textContent = '⏳ Отправка...';
+
+  // Collect all data
+  const block = BLOCKS[state.panel];
+  const weights = [0.20, 0.25, 0.15, 0.10, 0.30];
+  const sectionScores = block.sections.map(sec =>
+    sec.questions.map(q => {
+      const ans = state.answers[q.id];
+      if (ans === undefined) return 0;
+      if (ans === 0) return 1; if (ans === 2) return -1; return 0;
+    }).reduce((a,b)=>a+b,0) / sec.questions.length * 100
+  );
+  const ida = Math.round(sectionScores.reduce((s,v,i)=>s+v*weights[i],0)*10)/10;
+
+  const payload = {
+    timestamp: new Date().toISOString(),
+    quarter: 'III кв. 2025',
+    panel: state.panel === 'dev' ? 'Девелопер/Собственник' : 'Арендатор',
+    segment: state.segment || '—',
+    ida_total: ida,
+    scale_balance: state.scaleVal || '—',
+    open_text: state.openText || '',
+  };
+
+  // Section scores
+  block.sections.forEach((sec, i) => {
+    payload['ida_' + (i+1) + '_' + sec.id] = Math.round(sectionScores[i]*10)/10;
+  });
+
+  // Individual answers
+  Object.entries(state.answers).forEach(([qid, val]) => {
+    let sec, q;
+    for (const s of block.sections) {
+      const found = s.questions.find(qq => qq.id === qid);
+      if (found) { sec = s; q = found; break; }
+    }
+    if (q) payload['ans_' + qid] = q.opts[val];
+  });
+
+  // Send via fetch (no-cors for Apps Script)
+  const formData = new FormData();
+  Object.entries(payload).forEach(([k,v]) => formData.append(k, v));
+
+  fetch(SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' })
+    .then(() => showSuccessScreen(ida))
+    .catch(() => {
+      btn.disabled = false;
+      btnText.textContent = '✓ Отправить в Google Sheets';
+      showToast('❌ Ошибка отправки. Проверьте URL скрипта.');
+    });
+}
+
+function showSuccessScreen(ida) {
+  const resultsArea = document.getElementById('resultsArea');
+  const zone = ida > 10 ? 'Рынок арендодателя 📈' : ida < -10 ? 'Рынок арендатора 📉' : 'Равновесие ⚖️';
+  resultsArea.innerHTML = `
+    <div style="text-align:center;padding:60px 40px;background:white;border-radius:20px;border:1px solid var(--border)">
+      <div style="font-size:64px;margin-bottom:20px">✅</div>
+      <h2 style="font-family:Spectral,serif;font-size:28px;color:var(--navy);margin-bottom:10px">Ответы отправлены!</h2>
+      <p style="color:var(--muted);font-size:14px;line-height:1.6;max-width:440px;margin:0 auto 28px">
+        Ваши данные записаны в Google Таблицу и будут включены в расчёт квартального ИДА.
+      </p>
+      <div style="display:inline-flex;flex-direction:column;align-items:center;background:var(--light);border-radius:16px;padding:20px 40px;margin-bottom:28px">
+        <div style="font-size:48px;font-weight:800;color:var(--navy)">${ida > 0 ? '+' : ''}${ida}</div>
+        <div style="font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em">Ваш ИДА · ${zone}</div>
+      </div>
+      <br>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="restartSurvey()">↺ Заполнить ещё раз</button>
+        <button class="btn btn-ghost" onclick="switchToOtherPanel()">Заполнить другой блок</button>
+      </div>
+    </div>`;
+}
+
+// ── Setup modal ────────────────────────────────────────────────────────────
+function showSetupModal() {
+  document.getElementById('setupModal').style.display = 'flex';
+}
+function closeSetupModal() {
+  document.getElementById('setupModal').style.display = 'none';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeSetupModal(); });
+
+// ── Toast ─────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+
+<!-- ── Setup Modal ───────────────────────────────────────────────────────── -->
+<div id="setupModal" style="display:none;position:fixed;inset:0;background:rgba(10,20,50,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)closeSetupModal()">
+  <div style="background:white;border-radius:20px;max-width:680px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.25)">
+
+    <!-- Modal header -->
+    <div style="background:linear-gradient(135deg,#1a2f5e,#2451a3);padding:28px 32px;border-radius:20px 20px 0 0;position:relative">
+      <button onclick="closeSetupModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.15);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700">Инструкция по подключению</div>
+      <div style="font-family:Spectral,serif;font-size:22px;color:white;font-weight:600">Google Sheets + GitHub Pages</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:6px">5 шагов · ~10 минут · бесплатно</div>
+    </div>
+
+    <div style="padding:28px 32px">
+
+      <!-- Step indicator -->
+      <div style="display:flex;gap:0;margin-bottom:28px;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0">
+        ${['1. Sheets','2. Script','3. URL','4. GitHub','5. Готово'].map((s,i)=>`
+        <div style="flex:1;padding:8px 4px;background:${i===0?'#1a2f5e':'#f8fafc'};color:${i===0?'white':'#94a3b8'};text-align:center;font-size:10px;font-weight:700;border-right:1px solid #e2e8f0">${s}</div>`).join('')}
+      </div>
+
+      <!-- Steps -->
+      ${[
+        {
+          n:'1', icon:'📊', title:'Создайте Google Таблицу',
+          body:`Откройте <a href="https://sheets.new" target="_blank" style="color:#2451a3;font-weight:600">sheets.new</a> — создастся новая таблица.<br>
+          Название не важно, например <b>«ИДА Опросы 2025»</b>.<br>
+          Таблица будет автоматически заполняться при каждом ответе.`
+        },
+        {
+          n:'2', icon:'⚙️', title:'Создайте Apps Script',
+          body:`В таблице откройте <b>Расширения → Apps Script</b>.<br>
+          Удалите весь код и вставьте этот:
+          <div style="background:#1e293b;border-radius:10px;padding:16px;margin:10px 0;font-family:monospace;font-size:11px;color:#e2e8f0;line-height:1.6;overflow-x:auto">
+function doPost(e) {<br>
+&nbsp;&nbsp;const sheet = SpreadsheetApp.getActiveSheet();<br>
+&nbsp;&nbsp;const data = e.parameter;<br>
+&nbsp;&nbsp;const keys = Object.keys(data);<br>
+&nbsp;&nbsp;if (sheet.getLastRow() === 0) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sheet.appendRow(keys);<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;sheet.appendRow(keys.map(k => data[k]));<br>
+&nbsp;&nbsp;return ContentService<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.createTextOutput(JSON.stringify({status:'ok'}))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.setMimeType(ContentService.MimeType.JSON);<br>
+}<br>
+function doGet(e) { return doPost(e); }
+          </div>
+          Нажмите <b>💾 Сохранить</b> (Ctrl+S).`
+        },
+        {
+          n:'3', icon:'🔗', title:'Опубликуйте и получите URL',
+          body:`Нажмите <b>Развернуть → Новое развёртывание</b>.<br>
+          Тип: <b>Веб-приложение</b>.<br>
+          Выполнять от имени: <b>Я</b>.<br>
+          Доступ: <b>Все</b> (анонимные пользователи).<br>
+          Нажмите <b>Развернуть</b> → скопируйте URL вида:<br>
+          <div style="background:#f1f5f9;border-radius:8px;padding:10px 12px;margin:8px 0;font-family:monospace;font-size:11px;color:#475569;word-break:break-all">
+          https://script.google.com/macros/s/<b>ВАШИ_СИМВОЛЫ</b>/exec
+          </div>
+          Вставьте этот URL в HTML-файл — строка 1 в блоке <b>CONFIG</b>:<br>
+          <div style="background:#f1f5f9;border-radius:8px;padding:10px 12px;margin:8px 0;font-family:monospace;font-size:11px;color:#1e40af">
+          const SCRIPT_URL = '<b>вставьте URL сюда</b>';
+          </div>`
+        },
+        {
+          n:'4', icon:'🐙', title:'Разместите на GitHub Pages',
+          body:`1. Зайдите на <a href="https://github.com" target="_blank" style="color:#2451a3;font-weight:600">github.com</a> → создайте бесплатный аккаунт.<br>
+          2. Нажмите <b>New repository</b>, назовите <b>ida-survey</b>, выберите Public.<br>
+          3. Загрузите HTML-файл (с уже вставленным URL из шага 3), переименовав в <b>index.html</b>.<br>
+          4. В репозитории откройте <b>Settings → Pages → Source: main branch / root</b>.<br>
+          5. Через 1–2 минуты сайт будет доступен по адресу:<br>
+          <div style="background:#f1f5f9;border-radius:8px;padding:10px 12px;margin:8px 0;font-family:monospace;font-size:12px;color:#1e40af">
+          https://<b>ваш_логин</b>.github.io/ida-survey
+          </div>`
+        },
+        {
+          n:'5', icon:'✅', title:'Готово — отправьте ссылку респондентам',
+          body:`Опубликованная ссылка работает на любом устройстве.<br>
+          Каждый ответ автоматически добавляет новую строку в Google Таблицу.<br><br>
+          <b>Что попадает в таблицу:</b> дата/время, тип панели, отраслевой сегмент, ответы на все вопросы, сводный ИДА, оценка баланса рынка, открытый комментарий.<br><br>
+          <div style="background:#dcfce7;border-radius:10px;padding:12px 14px;font-size:12px;color:#166534">
+          💡 Для анализа данных можно сразу строить сводные таблицы и диаграммы прямо в Google Sheets или экспортировать в Excel.
+          </div>`
+        }
+      ].map(step => `
+        <div style="display:flex;gap:16px;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid #f1f5f9">
+          <div style="width:36px;height:36px;background:#1a2f5e;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">${step.icon}</div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:800;color:#1a2f5e;margin-bottom:6px">Шаг ${step.n}. ${step.title}</div>
+            <div style="font-size:13px;color:#475569;line-height:1.7">${step.body}</div>
+          </div>
+        </div>`).join('')}
+
+      <button onclick="closeSetupModal()" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px">Понятно, закрыть</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
