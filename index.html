@@ -959,6 +959,28 @@ body::before {
   .scale-dot { height: 30px; font-size: 11px; gap: 3px; }
 }
 
+
+/* STICKY FIRST COLUMN IN MATRIX */
+@media (max-width: 600px) {
+  .matrix-table th:first-child,
+  .matrix-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #f2f6fa;
+    box-shadow: 2px 0 6px rgba(27,58,82,0.08);
+    min-width: 120px;
+    max-width: 140px;
+  }
+  .matrix-table th:first-child {
+    background: #d8e5ef;
+    z-index: 3;
+  }
+  .matrix-table tr:hover td:first-child {
+    background: #eaf1f7;
+  }
+}
+
 </style>
 </head>
 <body>
