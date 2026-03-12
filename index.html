@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Индекс настроений — Складская недвижимость Казахстана</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #e4ecf3;
+  --surface: #f2f6fa;
+  --surface2: #d8e5ef;
+  --border: #b8cdde;
+  --accent: #1b3a52;
+  --accent-light: #2a6385;
+  --gold: #3f8fad;
+  --gold-light: #9ed0e8;
+  --text: #18262f;
+  --muted: #608090;
+  --red: #a03030;
+  --green: #2a6385;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(160deg, #dce8f2 0%, #e8eef4 40%, #d4e4ef 100%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* NOISE TEXTURE */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* HEADER BAR */
+.top-bar {
+  background: var(--accent);
+  color: white;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-bar-logo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.top-bar-sub {
+  font-size: 10px;
+  letter-spacing: 2px;
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+/* SCREENS */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeUp 0.45s ease forwards; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* HERO SECTION */
+.hero {
+  background: var(--accent);
+  color: white;
+  padding: 60px 32px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(160deg, #dce8f2 0%, #e8eef4 40%, #d4e4ef 100%);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+.hero-tag {
+  display: inline-block;
+  background: rgba(63,143,173,0.15);
+  border: 1px solid rgba(63,143,173,0.5);
+  color: var(--gold-light);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-family: 'PT Serif', serif;
+  font-size: clamp(26px, 5vw, 44px);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-sub {
+  font-size: 14px;
+  opacity: 0.65;
+  max-width: 480px;
+  margin: 0 auto 12px;
+  line-height: 1.7;
+}
+
+.quarter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 20px;
+  letter-spacing: 1px;
+}
+
+/* ROLE SECTION */
+.role-section {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: 'PT Serif', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.section-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 560px) { .roles-grid { grid-template-columns: 1fr; } }
+
+.role-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.role-card:hover { border-color: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(27,58,82,0.1); }
+
+.role-card.selected {
+  border-color: var(--accent);
+  background: rgba(27,58,82,0.04);
+}
+
+.role-card.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 14px; right: 16px;
+  width: 22px; height: 22px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.role-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+
+.role-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--accent);
+}
+
+.role-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* COMPANY NAME FIELD */
+.company-field-wrap {
+  margin-bottom: 28px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.company-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--surface);
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.company-input:focus { border-color: var(--accent); }
+.company-input::placeholder { color: var(--muted); font-size: 13px; }
+
+/* PROGRESS */
+.survey-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.progress-wrap {
+  flex: 1;
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.progress-bar {
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  border-radius: 100px;
+  transition: width 0.4s ease;
+}
+
+.role-pill {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* SURVEY BODY */
+.survey-body {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.block-header {
+  background: var(--accent);
+  color: white;
+  border-radius: 14px 14px 0 0;
+  padding: 18px 24px;
+  margin-top: 40px;
+  margin-bottom: 0;
+}
+
+.block-header:first-child { margin-top: 0; }
+
+.block-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 4px;
+}
+
+.block-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* QUESTION CARD */
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 28px 28px;
+}
+
+.q-card:last-of-type,
+.q-card.q-last {
+  border-radius: 0 0 14px 14px;
+  margin-bottom: 0;
+}
+
+.q-id {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.q-text {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+/* MATRIX TABLE */
+.matrix-wrap { overflow-x: auto; margin-bottom: 4px; }
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  min-width: 500px;
+}
+
+.matrix-table th {
+  background: var(--surface2);
+  padding: 10px 8px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+
+.matrix-table th:first-child {
+  text-align: left;
+  min-width: 180px;
+}
+
+.matrix-table td {
+  border: 1px solid var(--border);
+  padding: 10px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.matrix-table td:first-child {
+  text-align: left;
+  font-size: 12px;
+  color: var(--text);
+  padding-left: 14px;
+  font-weight: 500;
+}
+
+.matrix-table tr:hover td { background: rgba(27,58,82,0.03); }
+
+.radio-dot {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  margin: 0 auto;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.radio-dot:hover { border-color: var(--accent-light); background: rgba(27,58,82,0.05); }
+
+.radio-dot.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.radio-dot.selected::after {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: white;
+}
+
+/* SCALE SLIDER */
+.scale-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.scale-labels {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.scale-labels { display: none; }
+
+.scale-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.scale-dot {
+  flex: 1;
+  height: 40px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  background: white;
+  transition: all 0.15s;
+}
+
+.scale-dot:hover { border-color: var(--accent-light); color: var(--accent); }
+
+.scale-dot.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+/* RADIO SINGLE */
+.radio-list { display: flex; flex-direction: column; gap: 8px; }
+
+.radio-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 13px;
+  line-height: 1.5;
+  background: white;
+}
+
+.radio-item:hover { border-color: var(--accent-light); background: rgba(27,58,82,0.03); }
+
+.radio-item.selected {
+  border-color: var(--accent);
+  background: rgba(27,58,82,0.05);
+}
+
+.radio-circle {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio-item.selected .radio-circle {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.radio-item.selected .radio-circle::after {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: white;
+}
+
+/* CHECKBOX MULTI */
+.checkbox-list { display: flex; flex-direction: column; gap: 8px; }
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 13px;
+  line-height: 1.5;
+  background: white;
+}
+
+.check-item:hover { border-color: var(--accent-light); }
+.check-item.selected { border-color: var(--accent); background: rgba(27,58,82,0.05); }
+
+.check-box {
+  width: 18px; height: 18px;
+  border-radius: 4px;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.check-item.selected .check-box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.check-item.selected .check-box::after {
+  content: '✓';
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* TEXT INPUT */
+.text-area {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  resize: vertical;
+  min-height: 90px;
+  outline: none;
+  transition: border-color 0.2s;
+  background: white;
+}
+
+.text-area:focus { border-color: var(--accent); }
+
+.number-input {
+  padding: 13px 16px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  background: white;
+  width: 240px;
+}
+
+.number-input:focus { border-color: var(--accent); }
+
+/* NAV BUTTONS */
+.survey-nav {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 24px 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(27,58,82,0.25); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 2px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.btn-gold {
+  background: var(--gold);
+  color: white;
+}
+.btn-gold:hover { background: #2a6385; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(63,143,173,0.3); }
+
+/* REQUIRED BADGE */
+.required-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+/* ============ RESULTS ============ */
+.results-hero {
+  background: var(--accent);
+  color: white;
+  padding: 56px 32px 72px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.results-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0; right: 0;
+  height: 40px;
+  background: linear-gradient(160deg, #dce8f2 0%, #e8eef4 40%, #d4e4ef 100%);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+.results-company {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+
+.index-big {
+  font-family: 'PT Serif', serif;
+  font-size: 90px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+
+.index-label { font-size: 13px; opacity: 0.6; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
+
+.index-verdict {
+  display: inline-block;
+  background: rgba(63,143,173,0.15);
+  border: 1px solid rgba(63,143,173,0.4);
+  color: var(--gold-light);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 22px;
+  border-radius: 100px;
+  letter-spacing: 1px;
+}
+
+.results-body {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+.results-section-title {
+  font-family: 'PT Serif', serif;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--accent);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+
+.dim-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 640px) { .dim-cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 400px) { .dim-cards { grid-template-columns: 1fr; } }
+
+.dim-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.dim-card-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.dim-card-score {
+  font-family: 'PT Serif', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.dim-card-score span { font-size: 14px; color: var(--muted); font-family: 'Montserrat', sans-serif; font-weight: 400; }
+
+.dim-bar {
+  height: 5px;
+  background: var(--surface2);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.dim-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  border-radius: 100px;
+  transition: width 1s ease 0.2s;
+}
+
+/* ANSWERS TABLE */
+.answers-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.answers-block-header {
+  background: var(--accent);
+  color: white;
+  padding: 14px 22px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.answer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 22px;
+  border-bottom: 1px solid var(--border);
+  gap: 20px;
+  font-size: 13px;
+}
+
+.answer-row:last-child { border-bottom: none; }
+.answer-q { color: var(--muted); line-height: 1.6; flex: 1; }
+
+.answer-v {
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+  text-align: right;
+  max-width: 220px;
+  color: var(--accent);
+  line-height: 1.5;
+}
+
+.answer-v.open-ans {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--text);
+  font-style: italic;
+}
+
+.score-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.chip-high { background: rgba(42,99,133,0.12); color: var(--green); }
+.chip-mid { background: rgba(63,143,173,0.12); color: var(--gold); }
+.chip-low { background: rgba(192,57,43,0.1); color: var(--red); }
+
+.note-box {
+  background: rgba(63,143,173,0.08);
+  border: 1px solid rgba(63,143,173,0.3);
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 12px;
+  color: #2a5f78;
+  line-height: 1.7;
+  margin-top: 20px;
+}
+
+/* STEP NAV IN ROLE SCREEN */
+.step-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top-bar">
+    <div class="top-bar-logo">Индекс Настроений</div>
+    <div class="top-bar-sub">Складская недвижимость · Казахстан</div>
+  </div>
+
+  <!-- ===== SCREEN 1: ROLE ===== -->
+  <div class="screen active" id="screen-role">
+    <div class="hero">
+      <div class="hero-tag">Опрос участников рынка</div>
+      <h1>Индекс настроений рынка складской недвижимости Казахстана</h1>
+      <p class="hero-sub">Ежеквартальный опрос участников рынка — девелоперов, собственников и арендаторов складских площадей.</p>
+      <div class="quarter-badge">📅 II квартал 2025</div>
+    </div>
+
+    <div class="role-section">
+      <div class="section-label">Шаг 1 из 2</div>
+      <div class="section-title">Ваша роль на рынке</div>
+      <p class="section-sub">Анкета адаптируется под вашу роль. Выберите тип участника, от чьего имени вы заполняете опрос.</p>
+
+      <div class="roles-grid">
+        <div class="role-card" id="role-dev" onclick="selectRole('developer', this)">
+          <span class="role-icon">🏗️</span>
+          <div class="role-name">Девелопер / Собственник / УК</div>
+          <div class="role-desc">Владею или управляю складскими объектами, занимаюсь девелопментом.</div>
+        </div>
+        <div class="role-card" id="role-ten" onclick="selectRole('tenant', this)">
+          <span class="role-icon">📦</span>
+          <div class="role-name">Арендатор / Пользователь</div>
+          <div class="role-desc">Арендую складские площади или нахожусь в поиске объекта.</div>
+        </div>
+      </div>
+
+      <div class="company-field-wrap">
+        <label class="field-label">Наименование компании (необязательно)</label>
+        <input class="company-input" id="company-name" type="text" placeholder="Введите название вашей компании…" />
+      </div>
+
+      <div class="step-btns">
+        <button class="btn btn-primary" id="btn-start" onclick="startSurvey()" disabled>Перейти к анкете →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 2: SURVEY ===== -->
+  <div class="screen" id="screen-survey">
+    <div class="survey-header">
+      <div class="progress-wrap">
+        <div class="progress-top">
+          <span id="prog-label">Блок 1 из 5</span>
+          <span id="prog-pct">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="role-pill" id="role-pill">🏗️ Девелопер</div>
+    </div>
+
+    <div class="survey-body" id="survey-body"></div>
+
+    <div class="survey-nav">
+      <button class="btn btn-ghost" id="btn-prev" onclick="prevBlock()">← Назад</button>
+      <button class="btn btn-primary" id="btn-next-block" onclick="nextBlock()">Следующий блок →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN 3: RESULTS ===== -->
+  <div class="screen" id="screen-results">
+    <div class="results-hero">
+      <div class="results-company" id="res-company"></div>
+      <div class="index-big" id="res-index">—</div>
+      <div class="index-label">Индекс настроений</div>
+      <div class="index-verdict" id="res-verdict">—</div>
+    </div>
+
+    <div class="results-body">
+      <div class="results-section-title">По блокам</div>
+      <div class="dim-cards" id="res-dims"></div>
+
+      <div class="results-section-title">Все ответы</div>
+      <div id="res-answers"></div>
+
+      <div class="note-box">
+        📌 Методология в разработке. Итоговый расчёт индекса, веса блоков и интерпретации уточнятся после финализации. Данные демонстрационные.
+      </div>
+
+      <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="restart()">↩ Заполнить снова</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =====================================================================
+// DATA
+// =====================================================================
+
+const BLOCKS_DEV = [
+  {
+    id: 'A_retro',
+    title: 'Блок 1. Итоги прошедшего квартала (ретроспектива)',
+    questions: [
+      {
+        id: 'A1', type: 'matrix',
+        text: 'A1. Как изменились следующие показатели за прошедший квартал?',
+        cols: ['Значительно снизилось', 'Незначительно снизилось', 'Не изменилось', 'Незначительно выросло', 'Значительно выросло'],
+        colVals: [1,2,3,4,5],
+        rows: [
+          'Количество клиентских запросов / обращений',
+          'Скорость принятия решений арендаторами',
+          'Средний срок экспозиции свободных площадей',
+          'Уровень запрашиваемых ставок аренды (triple net)',
+          'Объём предоставляемых дисконтов / уступок',
+          'Доля вакантных площадей в вашем портфеле',
+          'Объём ввода новых площадей (ваш и конкурентов)',
+        ]
+      },
+      {
+        id: 'A2', type: 'scale10',
+        text: 'A2. Оцените текущий баланс спроса и предложения на складском рынке вашего региона (шкала 1–10)<br><small style="font-size:11px;color:#608090;font-weight:400">1 = рынок арендатора (избыток предложения) &nbsp;·&nbsp; 10 = рынок арендодателя (дефицит предложения)</small>',
+        labelLeft: '1 = рынок арендатора (избыток предложения)',
+        labelMid: '5 = равновесие',
+        labelRight: '10 = рынок арендодателя (дефицит)',
+      },
+      {
+        id: 'A3', type: 'radio',
+        text: 'A3. Какова доля вакантных площадей в вашем портфеле по итогам квартала?',
+        options: ['0% (полная заполненность)', 'До 3%', '3–5%', '5–10%', '10–15%', 'Более 15%']
+      },
+    ]
+  },
+  {
+    id: 'A_future',
+    title: 'Блок 2. Ожидания на ближайшие 6 месяцев',
+    questions: [
+      {
+        id: 'A4', type: 'matrix',
+        text: 'A4. Оцените ожидаемую динамику показателей на ближайшие 6 месяцев',
+        cols: ['Значительно снизится', 'Незначительно снизится', 'Не изменится', 'Незначительно вырастет', 'Значительно вырастет'],
+        colVals: [1,2,3,4,5],
+        rows: [
+          'Количество клиентских запросов',
+          'Ставки аренды (triple net)',
+          'Объём дисконтов / уступок',
+          'Доля вакантных площадей',
+          'Скорость заключения сделок',
+        ]
+      },
+      {
+        id: 'A5', type: 'scale10',
+        text: 'A5. Оцените ожидаемый баланс рынка через 6 месяцев (шкала 1–10)<br><small style="font-size:11px;color:#608090;font-weight:400">1 = рынок арендатора (избыток предложения) &nbsp;·&nbsp; 10 = рынок арендодателя (дефицит предложения)</small>',
+        labelLeft: '1 = рынок арендатора (избыток предложения)',
+        labelMid: '5 = равновесие',
+        labelRight: '10 = рынок арендодателя (дефицит предложения)',
+      },
+    ]
+  },
+  {
+    id: 'A_dev',
+    title: 'Блок 3. Девелоперская активность и инвестиции',
+    questions: [
+      {
+        id: 'A6', type: 'radio',
+        text: 'A6. Планируете ли вы ввод новых складских площадей в ближайшие 12 месяцев?',
+        options: [
+          'Да, спекулятивное строительство (без предварительного арендатора)',
+          'Да, BTS (под конкретного заказчика)',
+          'Да, комбинация (спек. + BTS)',
+          'Нет, заморозили / отложили проекты',
+          'Нет, не планируем',
+        ]
+      },
+      {
+        id: 'A7', type: 'radio',
+        text: 'A7. Как изменилась себестоимость строительства за прошедший квартал?',
+        options: [
+          'Значительно снизилась (более –10%)',
+          'Незначительно снизилась (–3––10%)',
+          'Не изменилась (±3%)',
+          'Незначительно выросла (+3–+10%)',
+          'Значительно выросла (более +10%)',
+        ]
+      },
+    ]
+  },
+  {
+    id: 'A_climate',
+    title: 'Блок 4. Оценка факторов бизнес-климата',
+    questions: [
+      {
+        id: 'A8', type: 'matrix',
+        text: 'A8. Оцените, как изменились условия ведения бизнеса в складском сегменте за квартал:',
+        cols: ['Значительно ухудшилось', 'Незначительно ухудшилось', 'Не изменилось', 'Незначительно улучшилось', 'Значительно улучшилось'],
+        colVals: [1,2,3,4,5],
+        rows: [
+          'Спрос на складские площади',
+          'Доступность финансирования',
+          'Доступ к земельным участкам',
+          'Инженерная инфраструктура (электричество, газ, вода)',
+          'Налоговая и регуляторная нагрузка',
+          'Доступность квалифицированных подрядчиков и кадров',
+          'Логистическая инфраструктура (дороги, ж/д, таможня)',
+          'Защита прав собственности / судебная практика',
+        ]
+      },
+    ]
+  },
+  {
+    id: 'A_open',
+    title: 'Блок 5. Экспертная оценка',
+    questions: [
+      {
+        id: 'A9', type: 'textarea',
+        text: 'A9. Назовите ТОП-3 главных барьера / вызова для складского рынка РК в ближайшие 12 месяцев',
+        placeholder: 'Опишите барьеры…',
+      },
+      {
+        id: 'A10', type: 'textarea',
+        text: 'A10. Какое одно событие / изменение могло бы оказать наибольшее позитивное влияние на рынок?',
+        placeholder: 'Ваш ответ…',
+      },
+      {
+        id: 'A11', type: 'textarea',
+        text: 'A11. Дополнительные комментарии к текущей ситуации на рынке (необязательно)',
+        placeholder: 'Ваши комментарии…',
+        optional: true,
+      },
+    ]
+  },
+];
+
+const BLOCKS_TEN = [
+  {
+    id: 'B_profile',
+    title: 'Блок 1. Профиль компании',
+    questions: [
+      {
+        id: 'B1', type: 'radio',
+        text: 'B1. Общий объём арендуемых складских площадей, кв. м',
+        options: ['До 1 000 кв. м', '1 000 – 5 000 кв. м', '5 000 – 15 000 кв. м', '15 000 – 50 000 кв. м', 'Более 50 000 кв. м']
+      },
+    ]
+  },
+  {
+    id: 'B_retro',
+    title: 'Блок 2. Итоги прошедшего квартала (ретроспектива)',
+    questions: [
+      {
+        id: 'B2', type: 'matrix',
+        text: 'B2. Как изменились следующие показатели для вашей компании за прошедший квартал?',
+        cols: ['Значительно снизилось', 'Незначительно снизилось', 'Не изменилось', 'Незначительно выросло', 'Значительно выросло'],
+        colVals: [1,2,3,4,5],
+        rows: [
+          'Потребность в складских площадях (объём)',
+          'Ставки аренды по текущим договорам',
+          'Качество предлагаемых объектов на рынке',
+          'Скорость поиска подходящего объекта',
+          'Готовность арендодателей к переговорам / дисконтам',
+        ]
+      },
+      {
+        id: 'B3', type: 'scale10',
+        text: 'B3. Оцените текущий баланс спроса и предложения глазами арендатора (шкала 1–10)<br><small style="font-size:11px;color:#608090;font-weight:400">1 = рынок арендатора (избыток предложения) &nbsp;·&nbsp; 10 = рынок арендодателя (дефицит предложения)</small>',
+        labelLeft: '1 = рынок арендатора (избыток предложения)',
+        labelMid: '5 = равновесие',
+        labelRight: '10 = рынок арендодателя (дефицит предложения)',
+      },
+      {
+        id: 'B4', type: 'radio',
+        text: 'B4. Изменились ли ваши планы по площадям за прошедший квартал?',
+        options: [
+          'Расширяем площади (ищем дополнительные)',
+          'Сохраняем текущий объём',
+          'Сокращаем площади / отказались от части',
+          'Планируем консолидацию (объединение нескольких точек в одну)',
+          'Планируем переезд в другой объект / регион',
+        ]
+      },
+    ]
+  },
+  {
+    id: 'B_future',
+    title: 'Блок 3. Ожидания на ближайшие 6 месяцев',
+    questions: [
+      {
+        id: 'B5', type: 'matrix',
+        text: 'B5. Оцените ожидаемую динамику показателей на ближайшие 6 месяцев',
+        cols: ['Значительно снизится', 'Незначительно снизится', 'Не изменится', 'Незначительно вырастет', 'Значительно вырастет'],
+        colVals: [1,2,3,4,5],
+        rows: [
+          'Потребность вашей компании в складских площадях',
+          'Ставки аренды на рынке',
+          'Доступность качественных площадей класса A',
+          'Ваш бюджет на складскую логистику',
+        ]
+      },
+      {
+        id: 'B6', type: 'scale10',
+        text: 'B6. Ожидаемый баланс рынка через 6 месяцев<br><span style="font-size:11px;font-weight:400;color:#608090">1 = рынок арендатора (избыток предложения) &nbsp;·&nbsp; 5 = равновесие &nbsp;·&nbsp; 10 = рынок арендодателя (дефицит предложения)</span>',
+        labelLeft: '1 = рынок арендатора (избыток предложения)',
+        labelMid: '5 = равновесие',
+        labelRight: '10 = рынок арендодателя (дефицит предложения)',
+      },
+    ]
+  },
+  {
+    id: 'B_requirements',
+    title: 'Блок 4. Требования к объектам и готовность к BTS',
+    questions: [
+      {
+        id: 'B7', type: 'checkbox',
+        text: 'B7. Какие характеристики склада являются для вас критически важными? (можно несколько)',
+        options: [
+          'Высота потолков ≥12 м',
+          'Количество доков / ворот (соотношение к площади)',
+          'Температурный режим (тёплый / холодный / морозильный)',
+          'Наличие мезонина',
+          'Нагрузка на пол ≥5 т/кв. м',
+          'Наличие ж/д рампы',
+          'Автоматизация (конвейерные системы, WMS-интеграция)',
+          'Близость к транспортным хабам (аэропорт, ж/д, трасса)',
+          'Энергоэффективность / ESG-соответствие',
+        ]
+      },
+      {
+        id: 'B8', type: 'radio',
+        text: 'B8. Рассматриваете ли вы формат BTS (built-to-suit) в ближайшие 24 месяца?',
+        options: [
+          'Да, активно ведём переговоры',
+          'Да, рассматриваем как опцию',
+          'Нет, предпочитаем готовые объекты',
+          'Нет, не готовы к долгосрочным обязательствам BTS',
+        ]
+      },
+      {
+        id: 'B9', type: 'number',
+        text: 'B9. Максимально приемлемая ставка аренды (triple net) для склада класса A, тенге/кв. м/мес.',
+        placeholder: '3 500',
+        unit: 'тнг/кв.м/мес.',
+        min: 3500,
+        step: 100,
+      },
+    ]
+  },
+  {
+    id: 'B_climate',
+    title: 'Блок 5. Оценка бизнес-климата (глазами арендатора)',
+    questions: [
+      {
+        id: 'B10', type: 'matrix',
+        text: 'B10. Оцените, как изменились условия для вашего бизнеса в складском сегменте за квартал:',
+        cols: ['Значительно ухудшилось', 'Незначительно ухудшилось', 'Не изменилось', 'Незначительно улучшилось', 'Значительно улучшилось'],
+        colVals: [1,2,3,4,5],
+        rows: [
+          'Доступность качественных складских площадей класса A',
+          'Уровень арендных ставок',
+          'Гибкость арендодателей (условия договоров, дисконты)',
+          'Логистическая инфраструктура (дороги, ж/д, таможня)',
+          'Кадровая обеспеченность (складской персонал)',
+          'Налоговая и регуляторная нагрузка',
+          'Общая деловая активность в вашей отрасли',
+          'Защита прав арендаторов / судебная практика',
+        ]
+      },
+      {
+        id: 'B11', type: 'textarea',
+        text: 'B11. ТОП-3 барьера при поиске / аренде склада класса A в РК',
+        placeholder: 'Опишите барьеры…',
+      },
+      {
+        id: 'B12', type: 'textarea',
+        text: 'B12. Дополнительные комментарии (необязательно)',
+        placeholder: 'Ваши комментарии…',
+        optional: true,
+      },
+    ]
+  },
+];
+
+// =====================================================================
+// STATE
+// =====================================================================
+let role = null;
+let companyName = '';
+let blocks = [];
+let currentBlock = 0;
+let answers = {}; // { qId: value }
+
+// =====================================================================
+// ROLE SELECTION
+// =====================================================================
+function selectRole(r, el) {
+  role = r;
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btn-start').disabled = false;
+}
+
+function startSurvey() {
+  companyName = document.getElementById('company-name').value.trim();
+  blocks = role === 'developer' ? BLOCKS_DEV : BLOCKS_TEN;
+  currentBlock = 0;
+  answers = {};
+  showScreen('screen-survey');
+  document.getElementById('role-pill').textContent = role === 'developer' ? '🏗️ Девелопер' : '📦 Арендатор';
+  renderBlock();
+}
+
+// =====================================================================
+// RENDER BLOCK
+// =====================================================================
+function renderBlock() {
+  const b = blocks[currentBlock];
+  const total = blocks.length;
+  const pct = Math.round((currentBlock / total) * 100);
+
+  document.getElementById('prog-label').textContent = `Блок ${currentBlock + 1} из ${total}: ${b.title.split('.')[1]?.trim() || b.title}`;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  document.getElementById('btn-prev').style.opacity = currentBlock === 0 ? '0.3' : '1';
+  document.getElementById('btn-prev').disabled = currentBlock === 0;
+
+  const isLast = currentBlock === blocks.length - 1;
+  const nextBtn = document.getElementById('btn-next-block');
+  nextBtn.textContent = isLast ? 'Завершить и посмотреть результаты →' : 'Следующий блок →';
+  nextBtn.className = isLast ? 'btn btn-gold' : 'btn btn-primary';
+
+  const body = document.getElementById('survey-body');
+  body.innerHTML = '';
+
+  // Block header
+  const hdr = document.createElement('div');
+  hdr.className = 'block-header';
+  hdr.innerHTML = `<div class="block-num">Блок ${currentBlock + 1} из ${total}</div><div class="block-title">${b.title}</div>`;
+  body.appendChild(hdr);
+
+  b.questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card' + (qi === b.questions.length - 1 ? ' q-last' : '');
+    card.innerHTML = renderQuestion(q);
+    body.appendChild(card);
+    // bind events
+    bindQuestion(q, card);
+  });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderQuestion(q) {
+  let inner = `<div class="q-id">${q.id}</div><div class="q-text">${q.text}</div>`;
+
+  if (q.type === 'matrix') {
+    inner += `<div class="matrix-wrap"><table class="matrix-table">
+      <thead><tr><th></th>${q.cols.map(c => `<th>${c}</th>`).join('')}</tr></thead>
+      <tbody>${q.rows.map((row, ri) => `
+        <tr>
+          <td>${row}</td>
+          ${q.colVals.map((v, ci) => `<td><div class="radio-dot${answers[q.id]?.[ri] === v ? ' selected' : ''}" 
+            data-qid="${q.id}" data-row="${ri}" data-val="${v}"></div></td>`).join('')}
+        </tr>`).join('')}
+      </tbody></table></div>`;
+
+  } else if (q.type === 'scale10') {
+    const cur = answers[q.id] || null;
+    inner += `<div class="scale-wrap">
+      <div class="scale-labels">
+        <span>${q.labelLeft}</span>
+        <span>${q.labelMid}</span>
+        <span>${q.labelRight}</span>
+      </div>
+      <div class="scale-dots">${[1,2,3,4,5,6,7,8,9,10].map(v => `
+        <div class="scale-dot${cur === v ? ' selected' : ''}" data-qid="${q.id}" data-val="${v}">${v}</div>`).join('')}
+      </div></div>`;
+
+  } else if (q.type === 'radio') {
+    inner += `<div class="radio-list">${q.options.map((opt, i) => `
+      <div class="radio-item${answers[q.id] === i ? ' selected' : ''}" data-qid="${q.id}" data-val="${i}">
+        <div class="radio-circle"></div><span>${opt}</span>
+      </div>`).join('')}</div>`;
+
+  } else if (q.type === 'checkbox') {
+    const sel = answers[q.id] || [];
+    inner += `<div class="checkbox-list">${q.options.map((opt, i) => `
+      <div class="check-item${sel.includes(i) ? ' selected' : ''}" data-qid="${q.id}" data-val="${i}">
+        <div class="check-box"></div><span>${opt}</span>
+      </div>`).join('')}</div>`;
+
+  } else if (q.type === 'textarea') {
+    inner += `<textarea class="text-area" data-qid="${q.id}" placeholder="${q.placeholder || ''}">${answers[q.id] || ''}</textarea>`;
+
+  } else if (q.type === 'number') {
+    inner += `<div style="display:flex;align-items:center;gap:10px;">
+      <input class="number-input" type="number" data-qid="${q.id}" placeholder="${q.placeholder || ''}" value="${answers[q.id] !== undefined ? answers[q.id] : (q.min || '')}" min="${q.min || ''}" step="${q.step || 1}">
+      <span style="font-size:13px;color:var(--muted)">${q.unit || ''}</span>
+    </div>`;
+  }
+
+  return inner;
+}
+
+function bindQuestion(q, card) {
+  if (q.type === 'matrix') {
+    card.querySelectorAll('.radio-dot[data-qid]').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const qid = dot.dataset.qid;
+        const row = parseInt(dot.dataset.row);
+        const val = parseInt(dot.dataset.val);
+        if (!answers[qid]) answers[qid] = {};
+        answers[qid][row] = val;
+        // update UI
+        card.querySelectorAll(`.radio-dot[data-qid="${qid}"][data-row="${row}"]`).forEach(d => d.classList.remove('selected'));
+        dot.classList.add('selected');
+      });
+    });
+  } else if (q.type === 'scale10') {
+    card.querySelectorAll('.scale-dot[data-qid]').forEach(dot => {
+      dot.addEventListener('click', () => {
+        answers[q.id] = parseInt(dot.dataset.val);
+        card.querySelectorAll('.scale-dot').forEach(d => d.classList.remove('selected'));
+        dot.classList.add('selected');
+      });
+    });
+  } else if (q.type === 'radio') {
+    card.querySelectorAll('.radio-item[data-qid]').forEach(item => {
+      item.addEventListener('click', () => {
+        answers[q.id] = parseInt(item.dataset.val);
+        card.querySelectorAll('.radio-item').forEach(i => i.classList.remove('selected'));
+        item.classList.add('selected');
+      });
+    });
+  } else if (q.type === 'checkbox') {
+    card.querySelectorAll('.check-item[data-qid]').forEach(item => {
+      item.addEventListener('click', () => {
+        const val = parseInt(item.dataset.val);
+        if (!answers[q.id]) answers[q.id] = [];
+        const idx = answers[q.id].indexOf(val);
+        if (idx === -1) answers[q.id].push(val); else answers[q.id].splice(idx, 1);
+        item.classList.toggle('selected');
+      });
+    });
+  } else if (q.type === 'textarea') {
+    const ta = card.querySelector('textarea');
+    ta.addEventListener('input', () => { answers[q.id] = ta.value; });
+  } else if (q.type === 'number') {
+    const inp = card.querySelector('input[type=number]');
+    if (q.min && answers[q.id] === undefined) { answers[q.id] = q.min; }
+    inp.addEventListener('input', () => { answers[q.id] = inp.value; });
+  }
+}
+
+function nextBlock() {
+  if (currentBlock < blocks.length - 1) {
+    currentBlock++;
+    renderBlock();
+  } else {
+    showResults();
+  }
+}
+
+function prevBlock() {
+  if (currentBlock > 0) { currentBlock--; renderBlock(); }
+}
+
+// =====================================================================
+// RESULTS
+// =====================================================================
+function showResults() {
+  showScreen('screen-results');
+  document.getElementById('res-company').textContent = companyName || (role === 'developer' ? 'Девелопер / Собственник' : 'Арендатор');
+
+  // Calc index: collect all numeric matrix/scale answers
+  const numericVals = [];
+  blocks.forEach(b => {
+    b.questions.forEach(q => {
+      if (q.type === 'matrix' && answers[q.id]) {
+        Object.values(answers[q.id]).forEach(v => numericVals.push(v));
+      } else if (q.type === 'scale10' && answers[q.id]) {
+        // normalize scale10 to 1-5
+        numericVals.push((answers[q.id] / 10) * 5);
+      }
+    });
+  });
+
+  let index = 50;
+  if (numericVals.length > 0) {
+    const avg = numericVals.reduce((a, b) => a + b, 0) / numericVals.length;
+    index = Math.round(((avg - 1) / 4) * 100);
+    index = Math.max(0, Math.min(100, index));
+  }
+
+  document.getElementById('res-index').textContent = index;
+
+  const verdicts = [
+    [0, 35, 'Пессимистичный', '#c0392b'],
+    [35, 50, 'Осторожный', '#e67e22'],
+    [50, 65, 'Нейтральный', '#3f8fad'],
+    [65, 80, 'Умеренно позитивный', '#1e6485'],
+    [80, 101, 'Оптимистичный', '#1b3a52'],
+  ];
+  const v = verdicts.find(([a, b]) => index >= a && index < b) || verdicts[2];
+  const vEl = document.getElementById('res-verdict');
+  vEl.textContent = v[2];
+  vEl.style.color = v[3];
+  vEl.style.background = v[3] + '22';
+  vEl.style.borderColor = v[3] + '55';
+
+  // Dims per block
+  const dimsEl = document.getElementById('res-dims');
+  dimsEl.innerHTML = '';
+  blocks.forEach(b => {
+    const vals = [];
+    b.questions.forEach(q => {
+      if (q.type === 'matrix' && answers[q.id]) Object.values(answers[q.id]).forEach(v => vals.push(v));
+      if (q.type === 'scale10' && answers[q.id]) vals.push((answers[q.id] / 10) * 5);
+    });
+    const sc = vals.length ? Math.round(((vals.reduce((a, x) => a + x, 0) / vals.length - 1) / 4) * 100) : null;
+    const label = b.title.replace(/Блок \d+\. /, '');
+    const card = document.createElement('div');
+    card.className = 'dim-card';
+    card.innerHTML = `
+      <div class="dim-card-title">${label}</div>
+      <div class="dim-card-score">${sc !== null ? sc : '—'}<span> / 100</span></div>
+      <div class="dim-bar"><div class="dim-bar-fill" style="width:0%" data-w="${sc || 0}"></div></div>
+    `;
+    dimsEl.appendChild(card);
+  });
+  setTimeout(() => {
+    document.querySelectorAll('.dim-bar-fill').forEach(el => { el.style.width = el.dataset.w + '%'; });
+  }, 100);
+
+  // Answers detail
+  const answersEl = document.getElementById('res-answers');
+  answersEl.innerHTML = '';
+
+  blocks.forEach(b => {
+    const blk = document.createElement('div');
+    blk.className = 'answers-block';
+    blk.innerHTML = `<div class="answers-block-header">${b.title}</div>`;
+
+    b.questions.forEach(q => {
+      const ans = answers[q.id];
+      let displayVal = '—';
+
+      if (q.type === 'matrix' && ans) {
+        // Show average
+        const vals = Object.values(ans);
+        const avg = (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(1);
+        displayVal = `Среднее: ${avg} / 5`;
+        // Also per row
+        const rowsHtml = q.rows.map((row, ri) => {
+          const rv = ans[ri];
+          const label = rv ? q.cols[rv - 1] : '—';
+          return `<div class="answer-row" style="padding-left:36px;background:rgba(0,0,0,0.01)">
+            <span class="answer-q" style="font-size:11px">${row}</span>
+            <span class="answer-v" style="font-size:11px">${label || '—'}</span>
+          </div>`;
+        }).join('');
+        blk.innerHTML += `<div class="answer-row"><span class="answer-q">${q.text}</span><span class="answer-v">${displayVal}</span></div>${rowsHtml}`;
+        return;
+
+      } else if (q.type === 'scale10' && ans) {
+        displayVal = `${ans} / 10`;
+      } else if (q.type === 'radio' && ans !== undefined) {
+        displayVal = q.options[ans] || '—';
+      } else if (q.type === 'checkbox' && ans?.length) {
+        displayVal = ans.map(i => q.options[i]).join(', ');
+      } else if ((q.type === 'textarea' || q.type === 'number') && ans) {
+        displayVal = ans;
+      }
+
+      const row = document.createElement('div');
+      row.className = 'answer-row';
+      const isOpen = q.type === 'textarea';
+      row.innerHTML = `<span class="answer-q">${q.text}</span><span class="answer-v${isOpen ? ' open-ans' : ''}">${displayVal}</span>`;
+      blk.appendChild(row);
+    });
+
+    answersEl.appendChild(blk);
+  });
+}
+
+// =====================================================================
+// UTILS
+// =====================================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.remove('active');
+  void el.offsetWidth;
+  el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restart() {
+  role = null;
+  companyName = '';
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('company-name').value = '';
+  document.getElementById('btn-start').disabled = true;
+  showScreen('screen-role');
+}
+</script>
+</body>
+</html>
